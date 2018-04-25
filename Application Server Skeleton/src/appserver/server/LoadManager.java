@@ -16,21 +16,30 @@ public class LoadManager {
     }
 
     public void satelliteAdded(String satelliteName) {
-        // add satellite
-        // ...
+        satellites.add(satelliteName);
+        System.out.println("[LoadManager.satelliteAdded] " + satelliteName + " added");
     }
 
+    public void satelliteRemoved(String satelliteName) {
+        satellites.remove(satelliteName);
+    }
 
     public String nextSatellite() throws Exception {
         
         int numberSatellites;
         
         synchronized (satellites) {
-            // implement policy that returns the satellite name according to a round robin methodology
-            // ...
+            numberSatellites = satellites.size();
+            if(numberSatellites == 0) {
+                throw new Exception("No Satellites available");
+            }
+            
+            if(lastSatelliteIndex+1 == numberSatellites) {
+                lastSatelliteIndex = -1;
+            }
+            lastSatelliteIndex++;
         }
 
-        return // ... name of satellite who is supposed to take job
-        ;
+        return (String) satellites.get(lastSatelliteIndex);
     }
 }
